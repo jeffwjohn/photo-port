@@ -34,14 +34,20 @@ import ContactForm from "./components/Contact"
 // Let's add our own component to the App component. First, get rid of the starter JSX in App() and replace it with an empty <div>, as shown in the following example code:
 
 function App() {
+  const [contactSelected, setContactSelected] = useState(false);
+
   const [categories] = useState([
     {
-      name: 'commercial',
-      description: 'Photos of grocery stores, food trucks, and other commercial projects',
+      name: "commercial",
+      description:
+        "Photos of grocery stores, food trucks, and other commercial projects",
     },
-    { name: 'portraits', description: 'Portraits of people in my life' },
-    { name: 'food', description: 'Delicious delicacies' },
-    { name: 'landscape', description: 'Fields, farmhouses, waterfalls, and the beauty of nature' },
+    { name: "portraits", description: "Portraits of people in my life" },
+    { name: "food", description: "Delicious delicacies" },
+    {
+      name: "landscape",
+      description: "Fields, farmhouses, waterfalls, and the beauty of nature",
+    },
   ]);
 
   const [currentCategory, setCurrentCategory] = useState(categories[0]);
@@ -52,12 +58,24 @@ function App() {
         categories={categories}
         setCurrentCategory={setCurrentCategory}
         currentCategory={currentCategory}
+        contactSelected={contactSelected}
+        setContactSelected={setContactSelected}
       ></Nav>
+
       <main>
-        <ContactForm></ContactForm>
-        <Gallery currentCategory={currentCategory}></Gallery>
-        <About></About>
+        {!contactSelected ? (
+          <>
+            <Gallery currentCategory={currentCategory}></Gallery>
+            <About></About>
+          </>
+        ) : (
+          <ContactForm></ContactForm>
+          // Notice the <> and </> that wrap the Gallery and About components. Can you imagine what these are and what they might be for? They are called React fragments—a shorthand abbreviation for <React.Fragment></React.Fragment>.
+
+          // They're a useful tool in React to allow multiple elements to be grouped together. Although in JSX you can only return a single parent element, this rule can be satisfied by wrapping the children components in a React fragment. This also allows you to wrap elements without creating extra DOM nodes, like wrapping with a <div> would do.
+        )}
       </main>
+      
     </div>
   );
 }

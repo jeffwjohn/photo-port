@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import Modal from '../Modal';
+import Modal from '../../Modal';
 
 const PhotoList = ({ category }) => {
 
@@ -101,16 +101,28 @@ const PhotoList = ({ category }) => {
     },
   ]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const currentPhotos = photos.filter((photo) => photo.category === category);
+
+  const [currentPhoto, setCurrentPhoto] = useState();
+
+  const toggleModal = (image, i) => {
+    setCurrentPhoto({...image, index: i})
+    setIsModalOpen(true);
+  } 
 
   return (
     <div>
+        {isModalOpen && <Modal currentPhoto={currentPhoto} />}
       <div className="flex-row">
         {currentPhotos.map((image, i) => (
           <img
             src={require(`../../../assets/small/${category}/${i}.jpg`)}
             alt={image.name}
             className="img-thumbnail mx-1"
+            onClick={() => toggleModal(image, i)}
+            // Note that we added the event listener attribute to each <img> element in each category and assigned the toggleModal function to handle the click event. We passed in the current image and i as arguments. The image object represents the element in the photos array, and the i will render the image as we did previously in the src attribute with the require function.
             key={image.name}
           />
         ))}
